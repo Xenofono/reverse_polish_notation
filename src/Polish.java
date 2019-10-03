@@ -3,18 +3,23 @@ import java.util.List;
 import java.util.Stack;
 
 /**
+ * expressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
  * @author Kristoffer Näsström
  */
 public class Polish {
 
-    private Stack<Double> stack;
-    private List<String> expressionAsList;
-    private String[] allVariables;
+    private final List<String> expressionAsList;
+    private final double sum;
+    private final String[] allVariables;
+
+    //Regex som separerar siffror ifrån alla andra tecken
+    private final String regex = "(?<=[-−+*×÷/()])|(?=[-−+*×/÷()])";
 
     public Polish(String string) {
-        allVariables = string.split("(?<=[-−+*×÷/()])|(?=[-−+*×/÷()])");
+        allVariables = string.split(regex);
         expressionAsList = new ArrayList<>();
         convert();
+        this.sum = calculateExpression();
     }
 
     private void convert() {
@@ -44,8 +49,8 @@ public class Polish {
 
     }
 
-    public double calculateExpression() {
-        this.stack = new Stack<>();
+    private double calculateExpression() {
+        Stack<Double> stack = new Stack<>();
 
         for (String entry : expressionAsList) {
             if (parseNumbers(entry)) {
@@ -80,7 +85,7 @@ public class Polish {
 
     }
 
-    
+
     private boolean parseNumbers(String str) {
         try {
             Integer.parseInt(str);
@@ -92,5 +97,9 @@ public class Polish {
 
     public List<String> getExpressionAsList() {
         return expressionAsList;
+    }
+
+    public double getSum() {
+        return sum;
     }
 }
