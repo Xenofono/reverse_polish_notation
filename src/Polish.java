@@ -32,22 +32,25 @@ public class Polish {
                 .toArray(String[]::new);
     }
 
+
     private List<String> stringToPostfix() {
 
         Stack<String> operators = new Stack<>();
         List<String> returnList = new ArrayList<>();
 
-
+        //Nummer läggs i listan, operators läggs på stack. När vi når en ")"  så poppar vi stacken till listan tills "("
         for (String entry : allVariables) {
 
-            if (parseNumbers(entry)) {
+            if (isANumber(entry)) {
                 returnList.add(entry);
             } else if (entry.equals(")")) {
 
                 String popped = operators.pop();
+
                 do {
                     returnList.add(popped);
                     popped = operators.pop();
+
                 } while (!popped.equals("("));
 
             } else {
@@ -70,11 +73,12 @@ public class Polish {
         Stack<Double> stack = new Stack<>();
 
         for (String entry : postfixExpressionAsList) {
-            if (parseNumbers(entry)) {
+            if (isANumber(entry)) {
                 stack.push(Double.parseDouble(entry));
             } else {
                 double lastInStack = stack.pop();
                 double secondLastInStack = stack.pop();
+
                 double newValue = performOperation(secondLastInStack, entry, lastInStack);
                 stack.push(newValue);
             }
@@ -98,13 +102,13 @@ public class Polish {
             case "÷":
                 return value1 / value2;
             default:
-                throw new NumberFormatException("Nä nu får du fixa");
+                throw new NumberFormatException("Nä nu får du dina input");
         }
 
     }
 
 
-    private boolean parseNumbers(String str) {
+    private boolean isANumber(String str) {
 
         try {
             Integer.parseInt(str);
