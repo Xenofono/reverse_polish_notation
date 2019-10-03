@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * expressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
+ * postfixExpressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
  * @author Kristoffer Näsström
  */
 public class Polish {
