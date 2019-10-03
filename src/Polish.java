@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 /**
  * postfixExpressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
+ *
  * @author Kristoffer Näsström
  */
 public class Polish {
@@ -12,19 +14,29 @@ public class Polish {
     private final double sum;
     private final String[] allVariables;
 
-    //Regex som separerar siffror ifrån alla andra tecken
-    private final String regex = "(?<=[-−+*×÷/()])|(?=[-−+*×/÷()])";
 
-    public Polish(String string) {
-        this.allVariables = string.split(regex);
+    public Polish(String input) {
+        this.allVariables = parseAndCleanString(input);
         this.postfixExpressionAsList = stringToPostfix();
         this.sum = calculateExpression();
+    }
+
+    private String[] parseAndCleanString(String input) {
+
+        //Regex som separerar siffror ifrån alla andra tecken, har flera varianter av t ex minus
+        final String regex = "(?<=[-−–+*×÷/()])|(?=[-−–+*×/÷()])";
+
+        return Arrays.stream(input.split(regex))
+                .map(String::strip)
+                .filter(str -> !str.isBlank())
+                .toArray(String[]::new);
     }
 
     private List<String> stringToPostfix() {
 
         Stack<String> operators = new Stack<>();
         List<String> returnList = new ArrayList<>();
+
 
         for (String entry : allVariables) {
 
@@ -40,6 +52,8 @@ public class Polish {
 
             } else {
                 operators.push(entry);
+
+
             }
         }
         //När vi har gått igenom alla variabler och det fortfarande finns operatorer så lägger vi alla dessa på slutet
@@ -78,6 +92,7 @@ public class Polish {
                 return value1 + value2;
             case "-":
             case "−":
+            case "–":
                 return value1 - value2;
             case "/":
             case "÷":
