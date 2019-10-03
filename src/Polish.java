@@ -46,7 +46,6 @@ public class Polish {
             } else if (entry.equals(")")) {
 
                 String popped = operators.pop();
-
                 do {
                     returnList.add(popped);
                     popped = operators.pop();
@@ -55,8 +54,6 @@ public class Polish {
 
             } else {
                 operators.push(entry);
-
-
             }
         }
         //När vi har gått igenom alla variabler och det fortfarande finns operatorer så lägger vi alla dessa på slutet
@@ -109,7 +106,6 @@ public class Polish {
 
 
     private boolean isANumber(String str) {
-
         try {
             Integer.parseInt(str);
             return true;
