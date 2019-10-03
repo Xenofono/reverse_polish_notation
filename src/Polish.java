@@ -8,7 +8,7 @@ import java.util.Stack;
  */
 public class Polish {
 
-    private final List<String> expressionAsList;
+    private final List<String> postfixExpressionAsList;
     private final double sum;
     private final String[] allVariables;
 
@@ -16,69 +16,72 @@ public class Polish {
     private final String regex = "(?<=[-−+*×÷/()])|(?=[-−+*×/÷()])";
 
     public Polish(String string) {
-        allVariables = string.split(regex);
-        expressionAsList = new ArrayList<>();
-        convert();
+        this.allVariables = string.split(regex);
+        this.postfixExpressionAsList = stringToPostfix();
         this.sum = calculateExpression();
     }
 
-    private void convert() {
+    private List<String> stringToPostfix() {
 
-        Stack<String> operator = new Stack<>();
+        Stack<String> operators = new Stack<>();
+        List<String> returnList = new ArrayList<>();
 
-        for (int i = 0; i < allVariables.length; i++) {
+        for (String entry : allVariables) {
 
-            if (parseNumbers(allVariables[i])) {
-                expressionAsList.add(allVariables[i]);
-            } else if (allVariables[i].equals(")")) {
+            if (parseNumbers(entry)) {
+                returnList.add(entry);
+            } else if (entry.equals(")")) {
 
-                String popped = operator.pop();
+                String popped = operators.pop();
                 do {
-                    expressionAsList.add(popped);
-                    popped = operator.pop();
+                    returnList.add(popped);
+                    popped = operators.pop();
                 } while (!popped.equals("("));
 
             } else {
-                operator.push(allVariables[i]);
+                operators.push(entry);
             }
         }
-
-        while (!operator.empty()) {
-            expressionAsList.add(operator.pop());
+        //När vi har gått igenom alla variabler och det fortfarande finns operatorer så lägger vi alla dessa på slutet
+        while (!operators.empty()) {
+            returnList.add(operators.pop());
         }
+
+        return returnList;
 
     }
 
     private double calculateExpression() {
+
         Stack<Double> stack = new Stack<>();
 
-        for (String entry : expressionAsList) {
+        for (String entry : postfixExpressionAsList) {
             if (parseNumbers(entry)) {
                 stack.push(Double.parseDouble(entry));
             } else {
-                double first = stack.pop();
-                double second = stack.pop();
-                double newValue = performOperation(second, entry, first);
+                double lastInStack = stack.pop();
+                double secondLastInStack = stack.pop();
+                double newValue = performOperation(secondLastInStack, entry, lastInStack);
                 stack.push(newValue);
             }
         }
         return stack.pop();
     }
 
-    private double performOperation(double first, String operator, double second) {
+    private double performOperation(double value1, String operator, double value2) {
 
         switch (operator) {
             case "*":
             case "×":
-                return first * second;
+                return value1 * value2;
             case "+":
-                return first + second;
+                return value1 + value2;
             case "-":
             case "−":
-                return first - second;
+                return value1 - value2;
             case "/":
             case "÷":
-                return first / second;
+                return value1 / value2;
             default:
                 throw new NumberFormatException("Nä nu får du fixa");
         }
@@ -87,6 +90,7 @@ public class Polish {
 
 
     private boolean parseNumbers(String str) {
+
         try {
             Integer.parseInt(str);
             return true;
@@ -95,8 +99,8 @@ public class Polish {
         }
     }
 
-    public List<String> getExpressionAsList() {
-        return expressionAsList;
+    public List<String> getPostfixExpressionAsList() {
+        return postfixExpressionAsList;
     }
 
     public double getSum() {
