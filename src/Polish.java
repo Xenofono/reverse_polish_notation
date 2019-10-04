@@ -11,7 +11,7 @@ import java.util.Stack;
 public class Polish {
 
     private final List<String> postfixExpressionAsList;
-    private final String postfistExpressionString;
+    private final String postfixExpressionString;
     private final double sum;
     private final String[] allVariables;
 
@@ -19,7 +19,7 @@ public class Polish {
     public Polish(String input) {
         this.allVariables = parseAndCleanString(input);
         this.postfixExpressionAsList = stringToPostfix();
-        this.postfistExpressionString = String.join(" ", postfixExpressionAsList);
+        this.postfixExpressionString = String.join(" ", postfixExpressionAsList);
         this.sum = calculateExpression();
     }
 
@@ -124,15 +124,15 @@ public class Polish {
         return this.sum;
     }
 
-    public String getPostfistExpressionString(){
-        return this.postfistExpressionString;
+    public String getPostfixExpressionString(){
+        return this.postfixExpressionString;
     }
 
     @Override
     public String toString(){
         return "pre-converted variables: " + Arrays.toString(this.allVariables) +
                 "\nconverted string as List: " + this.postfixExpressionAsList +
-                "\nconverted string as String " + this.postfistExpressionString +
+                "\nconverted string as String " + this.postfixExpressionString +
                 "\nfinal calculation is: " + this.sum;
     }
 }
