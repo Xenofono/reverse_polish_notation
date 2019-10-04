@@ -26,6 +26,7 @@ public class Polish {
     private String[] parseAndCleanString(String input) {
 
         //Regex som separerar siffror ifrån alla andra tecken, har flera varianter av t ex minus
+        //vänstra delen matchar allt som kommer efter ett av de tecknena, andra delen delen gör motsatsen
         final String regex = "(?<=[-−–+*×÷/()])|(?=[-−–+*×/÷()])";
 
         return Arrays.stream(input.split(regex))
