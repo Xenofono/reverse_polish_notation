@@ -40,7 +40,7 @@ public class Polish {
         Stack<String> operators = new Stack<>();
         List<String> returnList = new ArrayList<>();
 
-        //Nummer läggs i listan, operators läggs på stack. När vi når en ")"  så poppar vi stacken till listan tills "("
+        //Nummer läggs i listan, operators läggs på stack. När vi når en ")"  så poppar vi stacken  tills "(" nås
         for (String entry : allVariables) {
 
             if (isANumber(entry)) {
@@ -101,7 +101,7 @@ public class Polish {
             case "÷":
                 return value1 / value2;
             default:
-                throw new NumberFormatException("Nä nu får du dina input");
+                throw new NumberFormatException("Nä nu får du fixa dina input");
         }
 
     }
