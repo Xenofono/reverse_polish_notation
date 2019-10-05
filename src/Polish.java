@@ -1,7 +1,9 @@
 import java.util.*;
 
 /**
- * postfixExpressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
+ * Den här klassen tar ett matematiskt uttryck skrivit i infix med korrekt placerade paranteser och omvandlar det till ett
+ * postfixuttryck, också kallat omvänd polsk notation (reverse polish notation). Slutligen så beräknas och lagras resultatet
+ * av det konverterade uttrycket som en double.
  *
  * @author Kristoffer Näsström
  */
@@ -20,6 +22,12 @@ public class Polish {
         this.sum = calculateExpression();
     }
 
+    /**
+     * Separerar siffror och operatorer, tar bort whitespace och tar bort eventuella blanka element
+     * innan kvarstående element samlas i en array som returneras direkt.
+     * @param input är ett matematiskt uttryck skrivet i infix, det vanliga sättet med parenteser.
+     * @return strängarray som städats och filtrerats.
+     */
     private String[] parseAndCleanString(String input) {
 
         //Regex som separerar siffror ifrån alla andra tecken, har flera varianter av t ex minus
@@ -33,6 +41,11 @@ public class Polish {
     }
 
 
+    /**
+     * Metoden tar den städade strängen och omvandlar den till postfix, nummer hamnar direkt i listan medan operatorer
+     * läggs i en stack som poppas till listan när loopen når en stängningsparentes.
+     * @return Lista som representerar det inmatade infixuttrycket i korrekt följd enligt postfix
+     */
     private List<String> stringToPostfix() {
 
         Stack<String> operators = new Stack<>();
@@ -64,9 +77,14 @@ public class Polish {
 
     }
 
+    /**
+     * Går igenom hela uttrycket och utför beräkningen i en loop tills endast svaret kvarstår i stacken.
+     * @return slutliga beräkningen av hela postfixuttrycket som en double.
+     */
     private double calculateExpression() {
-        //1 1 + 2 * 1 +
+
         Stack<Double> stack = new Stack<>();
+
         for (String entry : postfixExpressionAsList) {
             if (isANumber(entry)) {
                 stack.push(Double.parseDouble(entry));
@@ -81,6 +99,13 @@ public class Polish {
         return stack.pop();
     }
 
+    /**
+     * Metoden anropas av calculateExpression(), sedan triggas rätt case och resultatet returneras.
+     * @param value1 double från stacken som ska beräknas.
+     * @param operator operator från listan, används som switch case.
+     * @param value2 double från stacken som ska beräknas.
+     * @return resultatet av inmatade värdena som en double.
+     */
     private double performOperation(double value1, String operator, double value2) {
 
         switch (operator) {
@@ -103,6 +128,11 @@ public class Polish {
     }
 
 
+    /**
+     * Metoden används för att skilja åt siffror och operatorer.
+     * @param str är antingen ett tal eller en operator.
+     * @return boolean ifall inmatade värdet kan ses som en double.
+     */
     private boolean isANumber(String str) {
         try {
             Double.parseDouble(str);
@@ -132,6 +162,13 @@ public class Polish {
                 "\nfinal calculation is: " + this.sum;
     }
 
+    /**
+     * Om o har samma adress som this så returneras true,
+     * om o är null eller annan klass så returneras false,
+     * annars castas o till Polish och dess sum jämförs med kallande instansens sum.
+     * @param o är ett objekt som ska jämföras mot en instans av Polish.
+     * @return boolean ifall en instans av Polish har samma sum som en annan.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,6 +177,10 @@ public class Polish {
         return Double.compare(polish.sum, sum) == 0;
     }
 
+    /**
+     * Resultatet av uttrycket används för att skapa en hashcode
+     * @return hashvärdet.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(sum);
