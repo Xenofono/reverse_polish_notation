@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * postfixExpressionAsList innehåller den färdiga postfix ekvationen, sum innehåller det beräknade värdet baserat på postfix
@@ -63,15 +60,13 @@ public class Polish {
         while (!operators.empty()) {
             returnList.add(operators.pop());
         }
-
         return returnList;
 
     }
 
     private double calculateExpression() {
-
+        //1 1 + 2 * 1 +
         Stack<Double> stack = new Stack<>();
-
         for (String entry : postfixExpressionAsList) {
             if (isANumber(entry)) {
                 stack.push(Double.parseDouble(entry));
@@ -110,7 +105,7 @@ public class Polish {
 
     private boolean isANumber(String str) {
         try {
-            Integer.parseInt(str);
+            Double.parseDouble(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -135,5 +130,18 @@ public class Polish {
                 "\nconverted string as List: " + this.postfixExpressionAsList +
                 "\nconverted string as String " + this.postfixExpressionString +
                 "\nfinal calculation is: " + this.sum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Polish polish = (Polish) o;
+        return Double.compare(polish.sum, sum) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sum);
     }
 }

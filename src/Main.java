@@ -13,6 +13,10 @@ public class Main {
 
         Polish polish3 = new Polish("(3 + 5) * (7 – 2)");
         System.out.println(polish3);
+
+        Polish polish4 = new Polish("((1+1)*2)+1.5");
+        System.out.println(polish4);
+
     }
 
 
