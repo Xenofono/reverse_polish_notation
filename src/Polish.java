@@ -15,11 +15,15 @@ public class Polish {
     private final String[] allVariables;
 
 
-    public Polish(String input) {
+    private Polish(String input) {
         this.allVariables = parseAndCleanString(input);
         this.postfixExpressionAsList = stringToPostfix();
         this.postfixExpressionString = String.join(" ", postfixExpressionAsList);
         this.sum = calculateExpression();
+    }
+
+    public static Polish of(String input){
+        return new Polish(input);
     }
 
     /**
